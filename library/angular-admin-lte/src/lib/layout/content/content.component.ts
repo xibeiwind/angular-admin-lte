@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, ViewChild, ElementRef, OnDestroy } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, ViewChild, ElementRef, OnDestroy, AfterViewInit } from '@angular/core';
 import { Router, NavigationStart, NavigationEnd, Event as RouterEvent } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 
@@ -17,7 +17,7 @@ import { removeSubscriptions } from '../../helpers';
   styleUrls: ['./content.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ContentComponent implements OnInit, OnDestroy {
+export class ContentComponent implements OnInit, AfterViewInit, OnDestroy {
   public description: string;
   public header: string;
   public heightStyle: number;
@@ -53,7 +53,7 @@ export class ContentComponent implements OnInit, OnDestroy {
     private headerService: HeaderService,
     private footerService: FooterService,
     private router: Router
-  ) {}
+  ) { }
 
   /**
    * @method ngOnInit
@@ -95,6 +95,11 @@ export class ContentComponent implements OnInit, OnDestroy {
       this.setContentMinHeight();
     }));
     this.heightStyle = this.windowInnerHeight;
+  }
+
+  ngAfterViewInit(): void {
+    this.navigationEnd = true;
+    this.setContentMinHeight();
   }
 
   /**
